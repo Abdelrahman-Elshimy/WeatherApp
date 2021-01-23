@@ -1,7 +1,7 @@
 const favModel = require('../models/favoriteCities.model');
 
 exports.getFavsOfUser = (req, res, next) => {
-    favModel.getFavsOfUser(req.params.id).then((favs) => {
+    favModel.getFavsOfUser(req.query.id).then((favs) => {
         res.json({favs});
     }).catch((err) => {
         res.json({err});
@@ -21,3 +21,4 @@ exports.deleteFav = (req, res, next) => {
         res.json({err});
     })
 }
+

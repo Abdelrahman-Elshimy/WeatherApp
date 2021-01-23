@@ -13,7 +13,7 @@ const helper = new OpenWeatherMapHelper(
 );
 
 // Search by city name
-router.post('/',bodyParser.urlencoded({extended: true}), (req, res, next) => {
+router.post('/',bodyParser.json(), (req, res, next) => {
     helper.getCurrentWeatherByCityName(req.body.cityName, (err, currentWeather) => {
         if(err){
             res.json(err);
@@ -24,7 +24,7 @@ router.post('/',bodyParser.urlencoded({extended: true}), (req, res, next) => {
     });
 });
 
-router.post('/city', bodyParser.urlencoded({extended: true}), weatherController.checkCity);
+router.post('/city', bodyParser.json(), weatherController.checkCity);
 
 router.get('/', weatherController.addNewCity);
 

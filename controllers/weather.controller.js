@@ -13,3 +13,10 @@ exports.addNewCity = (req, res, next) => {
         res.send('done');
     }).catch(err => res.send(err));
 }
+exports.getCity = (req, res, next) => {
+    weatherModel.getCity(req.query.id).then((favs) => {
+        res.json({favs});
+    }).catch((err) => {
+        res.json({err});
+    })
+}

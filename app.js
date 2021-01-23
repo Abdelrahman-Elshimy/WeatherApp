@@ -2,12 +2,21 @@ const express = require('express');
 
 const app = express();
 
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    next();
+})
+
 // Routes of weather
 const weatherRoutes = require('./routes/weather.routes');
 // Routes of User
 const userRoutes = require('./routes/user.routes');
 // Routes of Favorite Cities
 const favRoutes = require('./routes/userfavcities.routes');
+
+
 
 
 // Add weather routes Middlware

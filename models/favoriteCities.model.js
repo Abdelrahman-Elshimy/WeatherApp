@@ -21,11 +21,20 @@ exports.getFavsOfUser = (user_id) => {
 exports.addFavToUser = (fav) => {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
-            let newFav = new Fav({ userID: fav.user_id, cityID: fav.city_id });
-            newFav.save().then(() => {
-                mongoose.disconnect();
-                resolve();
-            }).catch(err => reject(err));
+            Fav.findOne({ userID: fav.user_id, cityID: fav.city_id }).then((data) => {
+                if (data) {
+                    mongoose.disconnect();
+                    resolve(data);
+                }
+                else {
+                    let newFav = new Fav({ userID: fav.user_id, cityID: fav.city_id });
+                    newFav.save().then(() => {
+                        mongoose.disconnect();
+                        resolve();
+                    }).catch(err => reject(err));
+                }
+            })
+
         }).catch(err => reject(err));
     })
 }

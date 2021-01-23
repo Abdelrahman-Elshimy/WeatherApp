@@ -22,8 +22,7 @@ const City = mongoose.model('cit', citySchema);
 exports.addNewCity = (city) => {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
-            let name = city.name.charAt(0).toUpperCase() + city.name.substring(1).toLowerCase();
-            console.log(name);
+            let name = city.cityName.charAt(0).toUpperCase() + city.cityName.substring(1).toLowerCase();
             return City.findOne({ name: name });
         }).then((getCity) => {
             if (getCity) {
@@ -31,7 +30,7 @@ exports.addNewCity = (city) => {
                 resolve(getCity);
             }
             else {
-                helper.getCurrentWeatherByCityName(city.name, (err, currentWeather) => {
+                helper.getCurrentWeatherByCityName(city.cityName, (err, currentWeather) => {
                     if (err) {
                         reject(err);
                     }
@@ -63,7 +62,23 @@ exports.getCities = () => {
     return new Promise((resolve, reject) => {
         mongoose.connect(DB_URL).then(() => {
             City.find().then((cities) => {
-                console.log(cities);
+                mongoose.disconnect();
+                resolve(cities);
+            }).catch(err => {
+                mongoose.disconnect();
+                reject(err);
+            })
+        }).catch(err => {
+            mongoose.disconnect();
+            reject(err);
+        })
+    });
+}
+// Get All Cities from DB
+exports.getCity = (id) => {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(DB_URL).then(() => {
+            City.findOne({_id: id}).then((cities) => {
                 mongoose.disconnect();
                 resolve(cities);
             }).catch(err => {
